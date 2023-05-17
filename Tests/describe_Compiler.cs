@@ -1,8 +1,7 @@
 ﻿using libyaraNET;
+using System.ComponentModel;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-using System.ComponentModel;
 
 namespace Tests
 {
@@ -10,19 +9,17 @@ namespace Tests
     public class describe_Compiler
     {
         private Compiler _compiler;
-        private YaraContext _ctx;
 
         [TestInitialize]
         public void before_each()
         {
-            _ctx = new YaraContext();
             _compiler = new Compiler();
         }
 
         [TestCleanup]
         public void after_each()
         {
-            _ctx.Dispose();
+            _compiler.Dispose();
         }
 
         [TestMethod]
@@ -30,6 +27,12 @@ namespace Tests
         public void given_invalid_rule_add_rule_string_should_throw()
         {
             _compiler.AddRuleString("invalid rule");
+        }
+
+        [TestMethod]
+        public void given_valid_rule_file_add_rule_file_should_not_throw()
+        {
+            _compiler.AddRuleFile(".\\Content\\BasicRule.yara");
         }
 
         [TestMethod]
@@ -57,7 +60,7 @@ namespace Tests
             {
                 Assert.AreEqual(1, cex.Errors.Count);
                 Assert.AreEqual(
-                    "syntax error on line 1 in file: [none]", cex.Errors[0]);
+                    "syntax error, unexpected hex string, expecting '{' on line 1 in file: [none]", cex.Errors[0]);
 
                 return;
             }

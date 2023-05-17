@@ -8,19 +8,17 @@ namespace Tests
     public class describe_Rules
     {
         private Compiler _compiler;
-        private YaraContext _ctx;
 
         [TestInitialize]
         public void before_each()
         {
-            _ctx = new YaraContext();
             _compiler = new Compiler();
         }
 
         [TestCleanup]
         public void after_each()
         {
-            _ctx.Dispose();
+            _compiler.Dispose();
         }
 
         [TestMethod]
